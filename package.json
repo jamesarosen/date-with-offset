@@ -1,0 +1,20 @@
+{
+  "name": "date-with-offset",
+  "version": "1.0.0",
+  "description": "Work with timezone-aware dates",
+  "keywords": [
+    "date",
+    "timezone",
+    "utc"
+  ],
+  "author": "James A. Rosen <james.a.rosen@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jamesarosen/date-with-offset.git"
+  },
+  "main": "./index",
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "jshint": "~1.1.0"
+  }
+}
