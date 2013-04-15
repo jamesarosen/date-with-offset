@@ -1,6 +1,6 @@
 {
   "name": "date-with-offset",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "licence": "APLv2",
   "description": "Work with timezone-aware dates",
   "keywords": [
