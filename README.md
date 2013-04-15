@@ -126,3 +126,19 @@ Get a plain `Date` representing the same point in time at the local offset:
 ```
 var nowInLocal = nowInParis.date();
 ```
+
+## Related Projects
+
+[node-time](https://github.com/TooTallNate/node-time) provides very similar
+functionality with a different API. It supports time zone names (not just
+offsets), but only runs in Node.
+
+If you want time zone parsing support, try
+[timezone-js](https://github.com/mde/timezone-js) or
+[timezone](https://npmjs.org/package/timezone).
+
+If you want a richer library for parsing, validating, manipulating, and
+formatting dates, try [Moment.js](http://momentjs.com/).
+
+If all you need to do is map Rails time zone names to IANA ones, you'll love
+[rails-timezone-js](https://github.com/davidwood/rails-timezone-js).
