@@ -146,11 +146,11 @@
   addGetters('Month');          addSetters('Month');
   addGetters('Seconds');        addSetters('Seconds');
 
-  if (typeof(module) !== undefined) {
+  if (typeof(module) !== 'undefined') {
     module.exports = DateWithOffset;
   }
 
-  if (typeof(window) !== undefined) {
+  if (typeof(window) !== 'undefined') {
     window.DateWithOffset = DateWithOffset;
   }
 
