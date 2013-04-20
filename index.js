@@ -1,5 +1,7 @@
 (function(window, undefined) {
 
+  "use strict";
+
   var slice = Array.prototype.slice,
       MILLISECONDS_PER_MINUTE = 60 * 1000,
       OFFSET_SUFFIX = /(((GMT)?[\+\-]\d\d:?\d\d)|Z)(\s*\(.+\))?$/;
@@ -50,11 +52,6 @@
     return date;
   }
 
-  function setTime(date) {
-    this.date = function() { return new Date(date); };
-    return this;
-  }
-
   function formattedOffset(offsetInMinutes) {
     var sign    = offsetInMinutes >= 0 ? '+' : '-';
     offsetInMinutes = Math.abs(offsetInMinutes);
@@ -73,7 +70,7 @@
       throw new TypeError('DateWithOffset requires an offset');
     }
 
-    setTime.call(this, buildDate(args, offset));
+    this.setTime(buildDate(args, offset));
     this.offset = function() { return offset; };
   }
 
@@ -109,7 +106,10 @@
       return this.setFullYear(1900 + year);
     },
 
-    setTime: setTime
+    setTime: function(date) {
+      this.date = function() { return new Date(date); };
+      return this;
+    }
 
   };
 

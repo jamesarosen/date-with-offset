@@ -3,6 +3,8 @@ var assert = require("assert"),
 
 describe('new DateWithOffset', function() {
 
+  "use strict";
+
   it('requires at least one argument', function() {
     assert.throws(
       function() {

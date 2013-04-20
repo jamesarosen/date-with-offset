@@ -2,6 +2,8 @@ var assert = require("assert"),
     DateWithOffset = require('../');
 
 function assertSameInstant(actual, expected) {
+  "use strict";
+
   actual   = new Date(actual);
   expected = new Date(expected);
 
@@ -14,6 +16,9 @@ function assertSameInstant(actual, expected) {
 }
 
 describe('DateWithOffset', function() {
+
+  "use strict";
+
   var halfNoonUTC = new Date("2008-12-31T12:30Z"),
       chatham = {
         toString: function() { return 'Chatham (+12:45)'; },
