@@ -66,11 +66,42 @@ var newYearsInChicago = new DateWithOffset(2013, 0, 1, -360);
 which treats such strings as local to the *browser* (or server execution
 environment).
 
+### Daylight Savings Time
+
+Many time zones obey Daylight Savings. This means that they can't be
+repesented as a single number; rather, they are a `function` that returns
+a different offset based on the `Date` passed in.
+
+Imagine a mythical time zone that is three hours ahead (East) of GMT from
+November through March each year, and four hours ahead April through October.
+If you represent this time zone with the following function:
+
+```javascript
+function mythicalTimeZone(date) {
+  var month = date.getMonth();
+  return (month < 3 || month > 9) ? 180 : 240;
+}
+```
+
+you could create dates in this time zone as follows:
+
+```javascript
+var date = new DateWithOffset(2013, 5, 16, mythicalTimeZone); // June 16 2013, MDT
+date.getTimezoneOffset(); // -240
+```
+
+If you *modify* the date, it will use the correct offset for the new time:
+
+```javascript
+date.setMonth(1); // February 16, 2013, MST
+date.getTimezoneOFfset(); // -180
+```
+
 ### Rich Offset Objects
 
-The last argument can be a `Number` (as above) or anything that responds to
-`valueOf`. If you have richer time zone objects, you can pass them directly
-into `new DateWithOffset`:
+The last argument can be a `Number` or `function` (as above) or anything that
+responds to `valueOf`. If you have richer time zone objects, you can pass them
+directly into `new DateWithOffset`:
 
 ```javascript
 var tokyo = {
@@ -82,6 +113,7 @@ var tokyo = {
 var nowInTokyo = new DateWithOffset(now, tokyo);
 // Mon Apr 15 2013 01:49:16 GMT+0900
 ```
+
 ***Note***: the offset is that between *this* object and *UTC*, which means
 that it is positive if the object's time zone is ahead of UTC and negative
 if it is behind. This is the opposite of what
