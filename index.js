@@ -10,8 +10,13 @@
 
   function isFunction(x) { return typeof(x) === 'function'; }
 
+  function reifyOffset(date, offset) {
+    return +(isFunction(offset) ? offset(date) : offset);
+  }
+
   function isOffset(x) {
     if (x == null) { return false; }
+    if (isFunction(x)) { return true; }
     if (isFunction(x.valueOf)) {
       x = x.valueOf();
     }
@@ -19,6 +24,7 @@
   }
 
   function applyOffset(date, offset) {
+    offset = reifyOffset(date, offset);
     date.setTime( date.getTime() + MILLISECONDS_PER_MINUTE * offset );
     return date;
   }
@@ -36,6 +42,7 @@
       args[6] = args[6] || null;
 
       date = new Date(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
+      offset = reifyOffset(date, offset);
       return applyOffset( date, -date.getTimezoneOffset() - offset );
     }
 
@@ -46,6 +53,7 @@
         isLocal           = !isYYYYmmdd && !isOffsetSpecified;
 
     if (isLocal) {
+      offset = reifyOffset(date, offset);
       date = applyOffset(date, -date.getTimezoneOffset() - offset);
     }
 
@@ -79,7 +87,8 @@
     // A Date whose UTC time is the local time of this object's real time.
     // That is, it is incorrect by `offset` minutes. Used for `getDate` et al.
     localDate: function() {
-      return applyOffset(this.date(), this.offset());
+      var offset = reifyOffset(this.date(), this.offset());
+      return applyOffset(this.date(), offset);
     },
 
     withOffset: function(offset) {
@@ -87,16 +96,20 @@
     },
 
     getTime:            function() { return this.date().getTime(); },
-    getTimezoneOffset:  function() { return -this.offset(); },
     toISOString:        function() { return this.date().toISOString(); },
     valueOf:            function() { return this.getTime(); },
     toJSON:             function() { return this.toISOString(); },
 
+    getTimezoneOffset:  function() {
+      return -reifyOffset(this, this.offset());
+    },
+
     toString: function() {
       var localDate = this.localDate(),
           plusBrowserOffset = applyOffset(localDate, localDate.getTimezoneOffset()),
-          asString = plusBrowserOffset.toString();
-      return asString.replace(OFFSET_SUFFIX, formattedOffset(this.offset()));
+          asString = plusBrowserOffset.toString(),
+          offset = reifyOffset(this, this.offset());
+      return asString.replace(OFFSET_SUFFIX, formattedOffset(offset));
     },
 
     getYear: function() {
@@ -128,7 +141,8 @@
     DateWithOffset.prototype['set' + property] = function(newValue) {
       var localDate = this.localDate();
       localDate['setUTC' + property](newValue);
-      return this.setTime( applyOffset(localDate, -this.offset()) );
+      var offset = reifyOffset(this, this.offset());
+      return this.setTime( applyOffset(localDate, -offset) );
     };
 
     DateWithOffset.prototype['setUTC' + property] = function(newValue) {
