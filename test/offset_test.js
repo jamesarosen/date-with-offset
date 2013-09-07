@@ -37,6 +37,13 @@ describe('DateWithOffset', function() {
     });
   });
 
+  describe('#toJSON', function() {
+    it('returns an ISO string in UTC', function() {
+      var expected = halfNoonUTC.toJSON();
+      assert.equal(inChatham.toJSON(), expected);
+    });
+  });
+
   describe('#valueOf', function() {
     it('returns the same moment in time', function() {
       assertSameInstant(inChatham, halfNoonUTC);

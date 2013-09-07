@@ -90,6 +90,7 @@
     getTimezoneOffset:  function() { return -this.offset(); },
     toISOString:        function() { return this.date().toISOString(); },
     valueOf:            function() { return this.getTime(); },
+    toJSON:             function() { return this.toISOString(); },
 
     toString: function() {
       var localDate = this.localDate(),
